@@ -27,6 +27,7 @@ const DEFAULT_OPTIONS = {
 export default {
   name: 'VueTimepicker',
   props: {
+    label: { type: [ String], default: "" },
     value: { type: [ Object, String ] },
     format: { type: String },
     minuteInterval: { type: [ Number, String ] },
@@ -2029,6 +2030,7 @@ export default {
   },
 
   mounted () {
+    this.$refs.input = this.$refs.input.$el.querySelector('input')
     window.clearTimeout(this.debounceTimer)
     window.clearTimeout(this.selectionTimer)
     window.clearTimeout(this.kbInputTimer)
@@ -2045,7 +2047,7 @@ export default {
 
 <template>
 <span class="vue__time-picker time-picker" :style="inputWidthStyle">
-  <input type="text" class="display-time" ref="input"
+  <v-text-field type="text" class="display-time" ref="input"
          :class="[inputClass, {'is-empty': inputIsEmpty, 'invalid': hasInvalidInput, 'all-selected': allValueSelected, 'disabled': disabled, 'has-custom-icon': $slots && $slots.icon }]"
          :style="inputWidthStyle"
          :id="id"
@@ -2056,6 +2058,12 @@ export default {
          :disabled="disabled"
          :readonly="!manualInput"
          :autocomplete="autocomplete"
+         :label="label"
+         dense
+         :clearable="!isActive && showClearBtn"
+         clear-icon="mdi-close"
+         @click:clear="clearTime"
+         outlined
          @focus="onFocus"
          @change="onChange"
          @blur="debounceBlur(); blurEvent()"
@@ -2064,21 +2072,19 @@ export default {
          @compositionstart="onCompostionStart"
          @compositionend="onCompostionEnd"
          @paste="pasteHandler"
-         @keydown.esc.exact="escBlur" />
-  <div class="controls" v-if="showClearBtn || showDropdownBtn" tabindex="-1">
-    <span v-if="!isActive && showClearBtn" class="clear-btn" tabindex="-1"
-          :class="{'has-custom-btn': $slots && $slots.clearButton }"
-          @click="clearTime">
-      <slot name="clearButton"><span class="char">&times;</span></slot>
-    </span>
-    <span v-if="showDropdownBtn" class="dropdown-btn" tabindex="-1"
-          :class="{'has-custom-btn': $slots && $slots.dropdownButton }"
-          @click="setDropdownState(fixedDropdownButton ? !showDropdown : true, true)"
-          @mousedown="keepFocusing">
-      <slot name="dropdownButton"><span class="char">&dtrif;</span></slot>
-    </span>
-  </div>
-  <div class="custom-icon" v-if="$slots && $slots.icon"><slot name="icon"></slot></div>
+         @keydown.esc.exact="escBlur">
+    <template slot="prepend-inner">
+      <div class="controls" v-if="showDropdownBtn" tabindex="-1">
+        <span class="dropdown-btn" tabindex="-1"
+              :class="{'has-custom-btn': $slots && $slots.dropdownButton }"
+              @click="setDropdownState(fixedDropdownButton ? !showDropdown : true, true)"
+              @mousedown="keepFocusing">
+          <slot name="dropdownButton"><span class="char">&dtrif;</span></slot>
+        </span>
+      </div>
+      <div class="custom-icon" v-if="$slots && $slots.icon"><slot name="icon"></slot></div>
+    </template>
+  </v-text-field>
   <div class="time-picker-overlay" v-if="showDropdown" @click="toggleActive" tabindex="-1"></div>
   <div class="dropdown" ref="dropdown" v-show="showDropdown" tabindex="-1"
        :class="[dropdownDirClass]" :style="inputWidthStyle"
@@ -2255,6 +2261,17 @@ export default {
 
 .vue__time-picker * {
   box-sizing: border-box;
+}
+
+.vue__time-picker .display-time.v-input--is-focused .v-input__slot fieldset,
+.vue__time-picker .display-time.v-input--is-label-active .v-input__slot fieldset {
+  padding-left: 8px;
+}
+
+.vue__time-picker .display-time label,
+.vue__time-picker .display-time label.v-label--active {
+  left: 0 !important;
+  right: auto !important;
 }
 
 .vue__time-picker input.display-time {
