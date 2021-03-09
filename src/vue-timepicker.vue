@@ -1166,6 +1166,7 @@ export default {
     },
 
     setDropdownState (toShow, fromUserClick = false) {
+      if (this.disabled) { return }
       if (toShow) {
         if (this.appendToBody) {
           this.appendDropdownToBody()
@@ -2078,7 +2079,7 @@ export default {
     <template slot="append">
       <div class="controls" v-if="showDropdownBtn" tabindex="-1">
         <span class="dropdown-btn" tabindex="-1"
-              :class="{'has-custom-btn': $slots && $slots.dropdownButton }"
+              :class="{'has-custom-btn': $slots && $slots.dropdownButton, 'disabled-dropdown-btn': this.disabled}"
               @click="setDropdownState(fixedDropdownButton ? !showDropdown : true, true)"
               @mousedown="keepFocusing">
           <slot name="dropdownButton"><span class="char">&dtrif;</span></slot>
@@ -2333,6 +2334,11 @@ export default {
   pointer-events: initial;
 
   transition: color .2s, opacity .2s;
+}
+
+.disabled-dropdown-btn {
+  cursor: text;
+  pointer-events: none;
 }
 
 .vue__time-picker .controls > *:hover {
