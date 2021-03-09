@@ -28,6 +28,7 @@ export default {
   name: 'VueTimepicker',
   props: {
     label: { type: [ String], default: "" },
+    typeComponent: { type: String, required: true },
     value: { type: [ Object, String ] },
     format: { type: String },
     minuteInterval: { type: [ Number, String ] },
@@ -2032,7 +2033,9 @@ export default {
   },
 
   mounted () {
-    this.$refs.input = this.$refs.input.$el.querySelector('input')
+    if (this.typeComponent !== "input") {
+      this.$refs.input = this.$refs.input.$el.querySelector('input')
+    }
     window.clearTimeout(this.debounceTimer)
     window.clearTimeout(this.selectionTimer)
     window.clearTimeout(this.kbInputTimer)
@@ -2049,7 +2052,7 @@ export default {
 
 <template>
 <span class="vue__time-picker time-picker" :style="inputWidthStyle">
-  <v-text-field type="text" class="display-time" ref="input"
+  <component type="text" class="display-time" ref="input" :is="typeComponent"
          :class="[inputClass, {'is-empty': inputIsEmpty, 'invalid': hasInvalidInput, 'all-selected': allValueSelected, 'disabled': disabled, 'has-custom-icon': $slots && $slots.icon }]"
          :style="inputWidthStyle"
          :id="id"
@@ -2083,7 +2086,7 @@ export default {
       </div>
       <div class="custom-icon" v-if="$slots && $slots.icon"><slot name="icon"></slot></div>
     </template>
-  </v-text-field>
+  </component>
   <div class="time-picker-overlay" v-if="showDropdown" @click="toggleActive" tabindex="-1"></div>
   <div class="dropdown" ref="dropdown" v-show="showDropdown" tabindex="-1"
        :class="[dropdownDirClass]" :style="inputWidthStyle"
