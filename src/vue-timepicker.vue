@@ -2058,7 +2058,7 @@ export default {
          :id="id"
          :name="name"
          :value="inputIsEmpty ? null : customDisplayTime"
-         :placeholder="placeholder ? placeholder : formatString"
+         :placeholder="placeholder ? placeholder : null"
          :tabindex="disabled ? -1 : tabindex"
          :disabled="disabled"
          :readonly="!manualInput"
