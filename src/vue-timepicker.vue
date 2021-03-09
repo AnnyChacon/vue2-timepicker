@@ -77,7 +77,9 @@ export default {
     hideDropdown: { type: Boolean, default: false },
     fixedDropdownButton: { type: Boolean, default: false },
 
-    debugMode: { type: Boolean, default: false }
+    debugMode: { type: Boolean, default: false },
+
+    fields : { type: Object, default: () => ({}) }
   },
 
   data () {
@@ -2059,11 +2061,8 @@ export default {
          :readonly="!manualInput"
          :autocomplete="autocomplete"
          :label="label"
-         dense
-         :clearable="!isActive && showClearBtn"
-         clear-icon="mdi-close"
+         v-bind="fields"
          @click:clear="clearTime"
-         outlined
          @focus="onFocus"
          @change="onChange"
          @blur="debounceBlur(); blurEvent()"
