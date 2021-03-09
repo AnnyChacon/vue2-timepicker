@@ -2075,7 +2075,7 @@ export default {
          @compositionend="onCompostionEnd"
          @paste="pasteHandler"
          @keydown.esc.exact="escBlur">
-    <template slot="prepend-inner">
+    <template slot="append">
       <div class="controls" v-if="showDropdownBtn" tabindex="-1">
         <span class="dropdown-btn" tabindex="-1"
               :class="{'has-custom-btn': $slots && $slots.dropdownButton }"
