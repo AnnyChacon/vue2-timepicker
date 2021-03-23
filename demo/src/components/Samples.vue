@@ -138,7 +138,17 @@ section#mostlyUsedSamples
       highlight-code(lang="html" data-title="HTML")
         | &lt;vue-timepicker&gt;&lt;/vue-timepicker&gt;
     template(v-slot:preview)
-      vue-timepicker
+      vue-timepicker(label="New label",
+        format="hh:mm A",
+        closeOnComplete=true,
+        advancedKeyboard=true,
+        hideDropdown=true,
+        manualInput=true,
+        autoScroll=true,
+        fixedDropdownButton=true,
+        debugMode=true,
+        lazy=true)
+        template(v-slot:dropdownButton) &#x02263;
 
   //- 12 Hours
   sample-block#format12hours

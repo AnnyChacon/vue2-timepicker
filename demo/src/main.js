@@ -1,5 +1,7 @@
 import Vue from 'vue'
 
+import Vuetify from "@/plugins/vuetify";
+
 import VueHighlightJS from 'vue-highlight.js'
 import javascript from 'highlight.js/lib/languages/javascript'
 import json from 'highlight.js/lib/languages/json'
@@ -23,5 +25,6 @@ Vue.use(VueHighlightJS, {
 })
 
 new Vue({
+  Vuetify,
   render: h => h(App),
 }).$mount('#app')
